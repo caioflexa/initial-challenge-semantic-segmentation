@@ -4,8 +4,9 @@ Ele exporta as imagens como arquivos GeoTIFF com base nas configurações defini
 """
 import ee
 import geemap
-import config
 import os
+
+import config
 
 
 def main():
