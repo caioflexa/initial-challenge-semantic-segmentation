@@ -1,80 +1,50 @@
 """
 Este script treina um modelo de segmentação U-Net para identificar pistas de pouso em imagens de satélite.
 """
-import os
 import torch
-import torch.nn as nn
-from torch.utils.data import Dataset, DataLoader
-from PIL import Image
+from torch.utils.data import DataLoader
 import numpy as np
-import albumentations as A
+import albumentations as alb
 from albumentations.pytorch import ToTensorV2
 import segmentation_models_pytorch as smp
 import matplotlib.pyplot as plt
 
+from utils.segmentation_dataset import SegmentationDataset
 import definitions
 import config
 
 
-class SegmentationDataset(Dataset):
-    def __init__(self, images_dir, masks_dir, augmentations=None):
-        self.images_dir = images_dir
-        self.masks_dir = masks_dir
-        self.image_files = sorted(os.listdir(images_dir))
-        self.mask_files = sorted(os.listdir(masks_dir))
-        self.augmentations = augmentations
-
-    def __len__(self):
-        return len(self.image_files)
-
-    def __getitem__(self, idx):
-        img_path = os.path.join(self.images_dir, self.image_files[idx])
-        mask_path = os.path.join(self.masks_dir, self.mask_files[idx])
-
-        img = np.array(Image.open(img_path).convert("RGB"))
-        mask = np.array(Image.open(mask_path).convert("L"))
-        mask = (mask > definitions.MASK_THRESHOLD).astype(np.float32)
-
-        if self.augmentations:
-            augmented = self.augmentations(image=img, mask=mask)
-            img = augmented['image']
-            mask = augmented['mask']
-
-        mask = mask.unsqueeze(0)
-        return img, mask
-
-
 def get_augmentations():
-    train_augs = A.Compose([
-        A.Resize(height=config.IMAGE_HEIGHT, width=config.IMAGE_WIDTH),
-        A.HorizontalFlip(p=config.P_HORIZONTAL_FLIP),
-        A.VerticalFlip(p=config.P_VERTICAL_FLIP),
-        A.Rotate(limit=config.ROTATE_LIMIT, p=config.P_ROTATE),
-        A.RandomBrightnessContrast(
+    train_augs = alb.Compose([
+        alb.Resize(height=config.IMAGE_HEIGHT, width=config.IMAGE_WIDTH),
+        alb.HorizontalFlip(p=config.P_HORIZONTAL_FLIP),
+        alb.VerticalFlip(p=config.P_VERTICAL_FLIP),
+        alb.Rotate(limit=config.ROTATE_LIMIT, p=config.P_ROTATE),
+        alb.RandomBrightnessContrast(
             p=config.P_BRIGHTNESS_CONTRAST,
             brightness_limit=config.BRIGHTNESS_LIMIT,
             contrast_limit=config.CONTRAST_LIMIT
         ),
-        A.GaussNoise(p=config.P_GAUSS_NOISE),
-        A.ElasticTransform(
+        alb.GaussNoise(p=config.P_GAUSS_NOISE),
+        alb.ElasticTransform(
             p=config.P_ELASTIC_TRANSFORM,
             alpha=config.ELASTIC_ALPHA,
             sigma=config.ELASTIC_SIGMA
         ),
-        A.GridDistortion(p=config.P_GRID_DISTORTION),
-        A.Normalize(mean=definitions.NORM_MEAN, std=definitions.NORM_STD),
+        alb.GridDistortion(p=config.P_GRID_DISTORTION),
+        alb.Normalize(mean=definitions.NORM_MEAN, std=definitions.NORM_STD),
         ToTensorV2(),
     ])
-    val_augs = A.Compose([
-        A.Resize(height=config.IMAGE_HEIGHT, width=config.IMAGE_WIDTH),
-        A.Normalize(mean=definitions.NORM_MEAN, std=definitions.NORM_STD),
+    val_augs = alb.Compose([
+        alb.Resize(height=config.IMAGE_HEIGHT, width=config.IMAGE_WIDTH),
+        alb.Normalize(mean=definitions.NORM_MEAN, std=definitions.NORM_STD),
         ToTensorV2(),
     ])
     return train_augs, val_augs
 
 
 def loss_fn(preds, targets):
-    bce_loss = nn.BCEWithLogitsLoss()
+    bce_loss = torch.nn.BCEWithLogitsLoss()
     dice_loss = smp.losses.DiceLoss(mode=definitions.DICE_LOSS_MODE)
     return bce_loss(preds, targets) + dice_loss(preds, targets)
 

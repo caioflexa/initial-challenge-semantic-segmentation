@@ -84,7 +84,7 @@ NORM_STD = [1.0, 1.0, 1.0]
 # Título para o gráfico de convergência.
 PLOT_TITLE = 'Curva de Convergência do Treinamento'
 # Rótulo do eixo X.
-PLOT_X_LABEL = 'Épocas'
+PLOT_X_LABEL = 'Epochs'
 # Rótulo do eixo Y.
 PLOT_Y_LABEL = 'Loss'
 # Rótulo para a linha de loss de treinamento.
@@ -92,4 +92,4 @@ PLOT_TRAIN_LABEL = 'Training Loss'
 # Rótulo para a linha de loss de validação.
 PLOT_VAL_LABEL = 'Validation Loss'
 # Formato do texto para a linha de melhor loss.
-PLOT_BEST_LOSS_LABEL = 'Melhor Val Loss: {best_loss_value:.4f} (Época {best_loss_epoch})'
+PLOT_BEST_LOSS_LABEL = 'Best Val Loss: {best_loss_value:.4f} (Epoch {best_loss_epoch})'
