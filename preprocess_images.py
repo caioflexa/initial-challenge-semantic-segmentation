@@ -6,8 +6,8 @@ import ee
 import geemap
 import os
 
-import config
 import definitions
+import config
 
 
 def main():

@@ -39,3 +39,10 @@ PNG_DIRECTORY = "data/images_png"
 JSON_MASKS_DIRECTORY = "data/masks_json"
 # Diretório de saída para as máscaras de segmentação em formato .png.
 PNG_MASKS_DIRECTORY = "data/masks_png"
+
+
+# ======================================================================================================================
+# GENERATE_OVERLAY.PY
+# ======================================================================================================================
+# Diretório de saída para as imagens em overlay (imagem + máscara).
+OVERLAY_DIRECTORY = "data/overlay_png"
