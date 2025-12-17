@@ -114,3 +114,11 @@ PLUSPLUS_P_ROTATE = 0.7
 PLUSPLUS_P_BRIGHTNESS_CONTRAST = 0.7
 # Probabilidade de aplicar GaussNoise.
 PLUSPLUS_P_GAUSS_NOISE = 0.2
+# Probabilidade de aplicar ElasticTransform.
+PLUSPLUS_P_ELASTIC_TRANSFORM = 0.2
+# Alpha para ElasticTransform.
+PLUSPLUS_ELASTIC_ALPHA = 120
+# Sigma para ElasticTransform.
+PLUSPLUS_ELASTIC_SIGMA = 120 * 0.05
+# Probabilidade de aplicar GridDistortion.
+PLUSPLUS_P_GRID_DISTORTION = 0.2

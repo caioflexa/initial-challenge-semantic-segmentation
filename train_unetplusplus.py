@@ -23,6 +23,12 @@ def get_augmentations():
         alb.Rotate(limit=config.PLUSPLUS_ROTATE_LIMIT, p=config.PLUSPLUS_P_ROTATE),
         alb.RandomBrightnessContrast(p=config.PLUSPLUS_P_BRIGHTNESS_CONTRAST),
         alb.GaussNoise(p=config.PLUSPLUS_P_GAUSS_NOISE),
+        alb.ElasticTransform(
+            p=config.PLUSPLUS_P_ELASTIC_TRANSFORM,
+            alpha=config.PLUSPLUS_ELASTIC_ALPHA,
+            sigma=config.PLUSPLUS_ELASTIC_SIGMA
+        ),
+        alb.GridDistortion(p=config.PLUSPLUS_P_GRID_DISTORTION),
         alb.Normalize(mean=definitions.NORM_MEAN, std=definitions.NORM_STD),
         ToTensorV2(),
     ])
