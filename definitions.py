@@ -30,3 +30,12 @@ FILE_PER_BAND = False
 # ======================================================================================================================
 # Diretório de saída para as imagens PNG convertidas.
 PNG_DIRECTORY = "data/images_png"
+
+
+# ======================================================================================================================
+# CONVERT_JSON_TO_MASK.PY
+# ======================================================================================================================
+# Diretório de entrada contendo os arquivos .json do LabelMe.
+JSON_MASKS_DIRECTORY = "data/masks_json"
+# Diretório de saída para as máscaras de segmentação em formato .png.
+PNG_MASKS_DIRECTORY = "data/masks_png"
