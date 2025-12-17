@@ -6,7 +6,7 @@ import rasterio
 import numpy as np
 from PIL import Image
 
-import config
+import definitions
 
 
 def tif_to_png(tif_path, png_path):
@@ -30,14 +30,14 @@ def tif_to_png(tif_path, png_path):
 
 def main():
     # Garante que o diretório de saída para PNGs exista.
-    os.makedirs(config.PNG_DIRECTORY, exist_ok=True)
+    os.makedirs(definitions.PNG_DIRECTORY, exist_ok=True)
 
     # Itera sobre todos os arquivos no diretório de TIFs.
-    for filename in os.listdir(config.TIF_DIRECTORY):
+    for filename in os.listdir(definitions.TIF_DIRECTORY):
         if filename.lower().endswith((".tif", ".tiff")):
-            tif_path = os.path.join(config.TIF_DIRECTORY, filename)
+            tif_path = os.path.join(definitions.TIF_DIRECTORY, filename)
             png_filename = os.path.splitext(filename)[0] + ".png"
-            png_path = os.path.join(config.PNG_DIRECTORY, png_filename)
+            png_path = os.path.join(definitions.PNG_DIRECTORY, png_filename)
 
             tif_to_png(tif_path, png_path)
             print(f"Convertido: {filename} -> {png_filename}")

@@ -7,6 +7,7 @@ import geemap
 import os
 
 import config
+import definitions
 
 
 def main():
@@ -14,7 +15,7 @@ def main():
     Função principal para processar e exportar imagens de satélite.
     """
     # Cria o diretório de saída, se ele não existir.
-    os.makedirs(config.TIF_DIRECTORY, exist_ok=True)
+    os.makedirs(definitions.TIF_DIRECTORY, exist_ok=True)
 
     # Inicializa a API do Google Earth Engine.
     ee.Initialize(project=config.GEE_PROJECT)
@@ -28,28 +29,28 @@ def main():
 
         # Busca, filtra e ordena a coleção de imagens para obter a melhor imagem.
         collection = (
-            ee.ImageCollection(config.IMAGE_COLLECTION)
+            ee.ImageCollection(definitions.IMAGE_COLLECTION)
             .filterBounds(roi)
-            .filterDate(config.START_DATE, config.END_DATE)
-            .filter(ee.Filter.lt(config.CLOUD_PROPERTY, config.CLOUD_THRESHOLD))
+            .filterDate(definitions.START_DATE, definitions.END_DATE)
+            .filter(ee.Filter.lt(definitions.CLOUD_PROPERTY, definitions.CLOUD_THRESHOLD))
         )
-        image = collection.sort(config.CLOUD_PROPERTY).first()
+        image = collection.sort(definitions.CLOUD_PROPERTY).first()
 
         # Seleciona as bandas de interesse da imagem.
-        image_selection = image.select(config.BANDS)
+        image_selection = image.select(definitions.BANDS)
 
         # Define o nome do arquivo e o caminho completo de saída.
-        filename = config.OUTPUT_FILENAME_FORMAT.format(idx=idx)
-        tif_path = os.path.join(config.TIF_DIRECTORY, filename)
+        filename = definitions.OUTPUT_FILENAME_FORMAT.format(idx=idx)
+        tif_path = os.path.join(definitions.TIF_DIRECTORY, filename)
 
         # Exporta a imagem processada como um arquivo GeoTIFF.
         geemap.ee_export_image(
             image_selection,
             filename=tif_path,
             region=roi,
-            scale=config.SCALE,
-            crs=config.CRS,
-            file_per_band=config.FILE_PER_BAND
+            scale=definitions.SCALE,
+            crs=definitions.CRS,
+            file_per_band=definitions.FILE_PER_BAND
         )
         print(f"GeoTIFF salvo: {tif_path}")
 
