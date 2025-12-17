@@ -98,10 +98,8 @@ PLUSPLUS_IMAGE_WIDTH = 416
 PLUSPLUS_FOCAL_LOSS_WEIGHT = 0.75
 # Peso para a Dice Loss na função de perda combinada.
 PLUSPLUS_DICE_LOSS_WEIGHT = 0.25
-# Fator de redução para o scheduler de learning rate.
-PLUSPLUS_SCHEDULER_FACTOR = 0.2
-# Paciência para o scheduler de learning rate.
-PLUSPLUS_SCHEDULER_PATIENCE = 25
+# Taxa de aprendizado mínima para o scheduler CosineAnnealingLR.
+PLUSPLUS_SCHEDULER_ETA_MIN = 1e-6
 # ======================================================================================================================
 # Data Augmentation:
 # Probabilidade de aplicar HorizontalFlip.

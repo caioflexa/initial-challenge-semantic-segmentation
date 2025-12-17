@@ -89,8 +89,6 @@ PLUSPLUS_ENCODER_NAME = "efficientnet-b4"
 PLUSPLUS_DECODER_ATTENTION = 'scse'
 # Modo da Focal Loss.
 PLUSPLUS_FOCAL_LOSS_MODE = 'binary'
-# Modo do scheduler de learning rate.
-PLUSPLUS_SCHEDULER_MODE = 'min'
 
 
 # ======================================================================================================================

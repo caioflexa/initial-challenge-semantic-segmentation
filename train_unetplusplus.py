@@ -3,7 +3,7 @@ Este script treina um modelo de segmentação U-Net++ para identificar pistas de
 """
 import torch
 from torch.utils.data import DataLoader
-from torch.optim.lr_scheduler import ReduceLROnPlateau
+from torch.optim.lr_scheduler import CosineAnnealingLR
 import numpy as np
 import albumentations as alb
 from albumentations.pytorch import ToTensorV2
@@ -86,11 +86,10 @@ def main():
         lr=config.PLUSPLUS_LEARNING_RATE,
         weight_decay=config.PLUSPLUS_WEIGHT_DECAY
     )
-    scheduler = ReduceLROnPlateau(
+    scheduler = CosineAnnealingLR(
         optimizer,
-        mode=definitions.PLUSPLUS_SCHEDULER_MODE,
-        factor=config.PLUSPLUS_SCHEDULER_FACTOR,
-        patience=config.PLUSPLUS_SCHEDULER_PATIENCE
+        T_max=config.PLUSPLUS_EPOCHS,
+        eta_min=config.PLUSPLUS_SCHEDULER_ETA_MIN
     )
 
     best_val_loss = float("inf")
@@ -134,7 +133,7 @@ def main():
             f"LR: {current_lr:.1e}"
         )
 
-        scheduler.step(avg_val_loss)
+        scheduler.step()
 
         if avg_val_loss < best_val_loss:
             best_val_loss = avg_val_loss
