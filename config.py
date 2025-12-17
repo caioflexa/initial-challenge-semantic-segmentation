@@ -88,7 +88,7 @@ PLUSPLUS_BATCH_SIZE = 4
 # Taxa de aprendizado (learning rate).
 PLUSPLUS_LEARNING_RATE = 1e-4
 # Decaimento de peso para o otimizador Adam.
-PLUSPLUS_WEIGHT_DECAY = 1e-5
+PLUSPLUS_WEIGHT_DECAY = 5e-5
 # Paciência para o early stopping.
 PLUSPLUS_EARLY_STOPPING_PATIENCE = 100
 # Dimensões para redimensionar as imagens de entrada (divisível por 32).
