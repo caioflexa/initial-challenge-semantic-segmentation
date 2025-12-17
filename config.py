@@ -50,6 +50,8 @@ EARLY_STOPPING_PATIENCE = 100
 # Dimensões para redimensionar as imagens de entrada.
 IMAGE_HEIGHT = 400
 IMAGE_WIDTH = 400
+# ======================================================================================================================
+# Data Augmentation:
 # Probabilidade de aplicar HorizontalFlip.
 P_HORIZONTAL_FLIP = 0.5
 # Probabilidade de aplicar VerticalFlip.
@@ -74,3 +76,43 @@ ELASTIC_ALPHA = 120
 ELASTIC_SIGMA = 120 * 0.07
 # Probabilidade de aplicar GridDistortion.
 P_GRID_DISTORTION = 0.3
+
+
+# ======================================================================================================================
+# TRAIN_UNETPLUSPLUS.PY
+# ======================================================================================================================
+# Número de épocas de treinamento.
+PLUSPLUS_EPOCHS = 1500
+# Tamanho do lote (batch size).
+PLUSPLUS_BATCH_SIZE = 4
+# Taxa de aprendizado (learning rate).
+PLUSPLUS_LEARNING_RATE = 1e-4
+# Decaimento de peso para o otimizador Adam.
+PLUSPLUS_WEIGHT_DECAY = 1e-5
+# Paciência para o early stopping.
+PLUSPLUS_EARLY_STOPPING_PATIENCE = 100
+# Dimensões para redimensionar as imagens de entrada (divisível por 32).
+PLUSPLUS_IMAGE_HEIGHT = 416
+PLUSPLUS_IMAGE_WIDTH = 416
+# Peso para a Focal Loss na função de perda combinada.
+PLUSPLUS_FOCAL_LOSS_WEIGHT = 0.75
+# Peso para a Dice Loss na função de perda combinada.
+PLUSPLUS_DICE_LOSS_WEIGHT = 0.25
+# Fator de redução para o scheduler de learning rate.
+PLUSPLUS_SCHEDULER_FACTOR = 0.2
+# Paciência para o scheduler de learning rate.
+PLUSPLUS_SCHEDULER_PATIENCE = 25
+# ======================================================================================================================
+# Data Augmentation:
+# Probabilidade de aplicar HorizontalFlip.
+PLUSPLUS_P_HORIZONTAL_FLIP = 0.5
+# Probabilidade de aplicar VerticalFlip.
+PLUSPLUS_P_VERTICAL_FLIP = 0.5
+# Limite de rotação em graus.
+PLUSPLUS_ROTATE_LIMIT = 20
+# Probabilidade de aplicar rotação.
+PLUSPLUS_P_ROTATE = 0.7
+# Probabilidade de aplicar RandomBrightnessContrast.
+PLUSPLUS_P_BRIGHTNESS_CONTRAST = 0.7
+# Probabilidade de aplicar GaussNoise.
+PLUSPLUS_P_GAUSS_NOISE = 0.2

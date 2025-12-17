@@ -79,6 +79,21 @@ NORM_STD = [1.0, 1.0, 1.0]
 
 
 # ======================================================================================================================
+# TRAIN_UNETPLUSPLUS.PY
+# ======================================================================================================================
+# Caminho para salvar o melhor modelo treinado.
+PLUSPLUS_MODEL_PATH = "unetplusplus_efficientnet_best.pth"
+# Arquitetura do encoder da U-Net++.
+PLUSPLUS_ENCODER_NAME = "efficientnet-b4"
+# Tipo de atenção para o decoder.
+PLUSPLUS_DECODER_ATTENTION = 'scse'
+# Modo da Focal Loss.
+PLUSPLUS_FOCAL_LOSS_MODE = 'binary'
+# Modo do scheduler de learning rate.
+PLUSPLUS_SCHEDULER_MODE = 'min'
+
+
+# ======================================================================================================================
 # PLOTTING
 # ======================================================================================================================
 # Título para o gráfico de convergência.
