@@ -31,3 +31,46 @@ COORDINATES = [
 # ======================================================================================================================
 # Intensidade da máscara de overlay (default 0.5).
 ALPHA = 0.5
+
+# ======================================================================================================================
+# TRAIN_UNET.PY
+# ======================================================================================================================
+# Dispositivo de treinamento ('cuda' ou 'cpu').
+DEVICE = "cuda"
+# Número de épocas de treinamento.
+EPOCHS = 2000
+# Tamanho do lote (batch size).
+BATCH_SIZE = 6
+# Taxa de aprendizado (learning rate).
+LEARNING_RATE = 1e-4
+# Decaimento de peso para o otimizador Adam.
+WEIGHT_DECAY = 1e-4
+# Paciência para o early stopping.
+EARLY_STOPPING_PATIENCE = 100
+# Dimensões para redimensionar as imagens de entrada.
+IMAGE_HEIGHT = 400
+IMAGE_WIDTH = 400
+# Probabilidade de aplicar HorizontalFlip.
+P_HORIZONTAL_FLIP = 0.5
+# Probabilidade de aplicar VerticalFlip.
+P_VERTICAL_FLIP = 0.5
+# Limite de rotação em graus.
+ROTATE_LIMIT = 45
+# Probabilidade de aplicar rotação.
+P_ROTATE = 0.8
+# Limite de brilho para RandomBrightnessContrast.
+BRIGHTNESS_LIMIT = 0.35
+# Limite de contraste para RandomBrightnessContrast.
+CONTRAST_LIMIT = 0.35
+# Probabilidade de aplicar RandomBrightnessContrast.
+P_BRIGHTNESS_CONTRAST = 0.8
+# Probabilidade de aplicar GaussNoise.
+P_GAUSS_NOISE = 0.3
+# Probabilidade de aplicar ElasticTransform.
+P_ELASTIC_TRANSFORM = 0.3
+# Alpha para ElasticTransform.
+ELASTIC_ALPHA = 120
+# Sigma para ElasticTransform.
+ELASTIC_SIGMA = 120 * 0.07
+# Probabilidade de aplicar GridDistortion.
+P_GRID_DISTORTION = 0.3

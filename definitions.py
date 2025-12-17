@@ -46,3 +46,50 @@ PNG_MASKS_DIRECTORY = "data/masks_png"
 # ======================================================================================================================
 # Diretório de saída para as imagens em overlay (imagem + máscara).
 OVERLAY_DIRECTORY = "data/overlay_png"
+
+
+# ======================================================================================================================
+# TRAIN_UNET.PY
+# ======================================================================================================================
+# Diretórios de dados para treinamento e validação.
+TRAIN_IMAGES_DIR = "data/train/images"
+TRAIN_MASKS_DIR = "data/train/masks"
+VAL_IMAGES_DIR = "data/val/images"
+VAL_MASKS_DIR = "data/val/masks"
+# Caminho para salvar o melhor modelo treinado.
+MODEL_PATH = "unet_best_model.pth"
+# Arquitetura do encoder da U-Net.
+ENCODER_NAME = "resnet34"
+# Pesos pré-treinados para o encoder.
+ENCODER_WEIGHTS = "imagenet"
+# Número de canais de entrada da imagem (3 para RGB).
+IN_CHANNELS = 3
+# Número de classes de saída (1 para segmentação binária).
+NUM_CLASSES = 1
+# Limiar para binarizar a máscara (0-255).
+MASK_THRESHOLD = 127
+# Número de workers para o DataLoader.
+NUM_WORKERS = 4
+# Modo da Dice Loss.
+DICE_LOSS_MODE = 'binary'
+# Média para a normalização das imagens.
+NORM_MEAN = [0.0, 0.0, 0.0]
+# Desvio padrão para a normalização das imagens.
+NORM_STD = [1.0, 1.0, 1.0]
+
+
+# ======================================================================================================================
+# PLOTTING
+# ======================================================================================================================
+# Título para o gráfico de convergência.
+PLOT_TITLE = 'Curva de Convergência do Treinamento'
+# Rótulo do eixo X.
+PLOT_X_LABEL = 'Épocas'
+# Rótulo do eixo Y.
+PLOT_Y_LABEL = 'Loss'
+# Rótulo para a linha de loss de treinamento.
+PLOT_TRAIN_LABEL = 'Training Loss'
+# Rótulo para a linha de loss de validação.
+PLOT_VAL_LABEL = 'Validation Loss'
+# Formato do texto para a linha de melhor loss.
+PLOT_BEST_LOSS_LABEL = 'Melhor Val Loss: {best_loss_value:.4f} (Época {best_loss_epoch})'
