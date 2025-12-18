@@ -175,6 +175,8 @@ def main():
         )
         plt.axvline(x=float(best_loss_epoch), color='green', linestyle='--', label=label_text)
         plt.legend()
+        plt.savefig(definitions.PLOT_UNETPLUSPLUS_PATH)
+        print(f"Gráfico de treinamento salvo em: {definitions.PLOT_UNETPLUSPLUS_PATH}")
         plt.show()
 
 

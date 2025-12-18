@@ -106,6 +106,10 @@ PLOT_TRAIN_LABEL = 'Training Loss'
 PLOT_VAL_LABEL = 'Validation Loss'
 # Formato do texto para a linha de melhor loss.
 PLOT_BEST_LOSS_LABEL = 'Best Val Loss: {best_loss_value:.4f} (Epoch {best_loss_epoch})'
+# Caminho para salvar o gráfico de treino do U-Net.
+PLOT_UNET_PATH = "results/unet_training_curve.png"
+# Caminho para salvar o gráfico de treino do U-Net++.
+PLOT_UNETPLUSPLUS_PATH = "results/unetplusplus_training_curve.png"
 
 
 # ======================================================================================================================
