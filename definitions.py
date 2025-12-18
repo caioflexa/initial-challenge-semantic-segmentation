@@ -57,7 +57,7 @@ TRAIN_MASKS_DIR = "data/train/masks"
 VAL_IMAGES_DIR = "data/val/images"
 VAL_MASKS_DIR = "data/val/masks"
 # Caminho para salvar o melhor modelo treinado.
-MODEL_PATH = "unet_best_model.pth"
+MODEL_PATH = "results/unet_best_model.pth"
 # Arquitetura do encoder da U-Net.
 ENCODER_NAME = "resnet34"
 # Pesos pré-treinados para o encoder.
@@ -82,7 +82,7 @@ NORM_STD = [1.0, 1.0, 1.0]
 # TRAIN_UNETPLUSPLUS.PY
 # ======================================================================================================================
 # Caminho para salvar o melhor modelo treinado.
-PLUSPLUS_MODEL_PATH = "unetplusplus_efficientnet_best.pth"
+PLUSPLUS_MODEL_PATH = "results/unetplusplus_best_model.pth"
 # Arquitetura do encoder da U-Net++.
 PLUSPLUS_ENCODER_NAME = "efficientnet-b4"
 # Tipo de atenção para o decoder.

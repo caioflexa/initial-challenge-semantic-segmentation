@@ -1,6 +1,7 @@
 """
 Este script treina um modelo de segmentação U-Net para identificar pistas de pouso em imagens de satélite.
 """
+import os
 import torch
 from torch.utils.data import DataLoader
 import numpy as np
@@ -50,6 +51,9 @@ def loss_fn(preds, targets):
 
 
 def main():
+    # Garante que o diretório de resultados exista.
+    os.makedirs(os.path.dirname(definitions.MODEL_PATH), exist_ok=True)
+
     device = "cuda" if config.DEVICE == "cuda" and torch.cuda.is_available() else "cpu"
     print(f"Usando dispositivo: {device}")
 
