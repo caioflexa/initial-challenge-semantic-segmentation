@@ -84,7 +84,7 @@ NORM_STD = [1.0, 1.0, 1.0]
 # Caminho para salvar o melhor modelo treinado.
 PLUSPLUS_MODEL_PATH = "results/unetplusplus_best_model.pth"
 # Arquitetura do encoder da U-Net++.
-PLUSPLUS_ENCODER_NAME = "efficientnet-b4"
+PLUSPLUS_ENCODER_NAME = "efficientnet-b7"
 # Tipo de atenção para o decoder.
 PLUSPLUS_DECODER_ATTENTION = 'scse'
 # Modo da Focal Loss.
@@ -106,3 +106,18 @@ PLOT_TRAIN_LABEL = 'Training Loss'
 PLOT_VAL_LABEL = 'Validation Loss'
 # Formato do texto para a linha de melhor loss.
 PLOT_BEST_LOSS_LABEL = 'Best Val Loss: {best_loss_value:.4f} (Epoch {best_loss_epoch})'
+
+
+# ======================================================================================================================
+# INFERENCE
+# ======================================================================================================================
+# Diretório de imagens de teste para inferência.
+TEST_IMAGES_DIR = "data/test/images"
+# Diretório de saída para as máscaras previstas pelo modelo U-Net.
+PREDICTED_MASKS_UNET_DIR = "results/predicted_masks_unet"
+# Diretório de saída para as máscaras previstas pelo modelo U-Net++.
+PREDICTED_MASKS_UNETPLUSPLUS_DIR = "results/predicted_masks_unetplusplus"
+# Diretório de saída para os overlays das predições do U-Net.
+PREDICTED_OVERLAYS_UNET_DIR = "results/predicted_overlays_unet"
+# Diretório de saída para os overlays das predições do U-Net++.
+PREDICTED_OVERLAYS_UNETPLUSPLUS_DIR = "results/predicted_overlays_unetplusplus"

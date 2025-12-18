@@ -122,3 +122,10 @@ PLUSPLUS_ELASTIC_ALPHA = 120
 PLUSPLUS_ELASTIC_SIGMA = 120 * 0.05
 # Probabilidade de aplicar GridDistortion.
 PLUSPLUS_P_GRID_DISTORTION = 0.2
+
+
+# ======================================================================================================================
+# INFERENCE
+# ======================================================================================================================
+# Limiar de probabilidade para binarizar a máscara de saída.
+PREDICTION_THRESHOLD = 0.5
