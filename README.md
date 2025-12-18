@@ -24,7 +24,7 @@ Você pode usar as seguintes ferramentas, mas sinta-se à vontade para explorar 
 
 * **Linguagem de Programação:** **Python** é altamente recomendado devido à vasta gama de bibliotecas geoespaciais e de aprendizado de máquina.
 * **Acesso a Dados:**
-    * **Google Earth Engine (GEE):** Para processamento em nuvem. Use a biblioteca `earthengine-api` ou `xee` para uma interface mais intuitiva.
+    * **Google Earth Engine (GEE)::** Para processamento em nuvem. Use a biblioteca `earthengine-api` ou `xee` para uma interface mais intuitiva.
 * **Bibliotecas Sugeridas:**
     * `earthengine-api`
     * `xee` (para integrar o GEE com `xarray`)
@@ -73,7 +73,9 @@ Boa sorte e divirta-se com o desafio!
 
 ---
 
-## Guia de Execução do Projeto de Segmentação Semântica
+## Guia de Execução do Projeto: Segmentação Semântica de Pistas de Pouso
+
+Este guia detalha o processo de configuração, aquisição de dados, pré-processamento, treinamento e inferência para o projeto.
 
 ### 1. Configuração do Ambiente
 
@@ -122,7 +124,7 @@ python preprocess_images.py
 *   **Entrada:** Coordenadas e parâmetros de busca definidos em `config.py` e `definitions.py`.
 *   **Saída:** Arquivos `.tif` salvos em `data/images_tif/`.
 
-**Observação.**
+**Observação sobre Configurações:**
 No projeto, as configurações são divididas em dois arquivos:
 - `definitions.py`: Contém constantes e "regras de negócio" do projeto (ex: caminhos de diretórios, nomes de encoders, modos de loss, etc.). São valores que raramente mudam.
 - `config.py`: Contém hiperparâmetros e configurações que podem ser ajustadas com frequência para experimentação (ex: learning rate, batch size, parâmetros de augmentation, etc.).
@@ -226,3 +228,62 @@ python predict_unetplusplus.py
 *   **Saída:**
     *   Máscaras previstas (`.png`) salvas em `results/predicted_masks_unetplusplus/`.
     *   Overlays (`.png`) salvos em `results/predicted_overlays_unetplusplus/`.
+
+---
+
+## Documentação do Projeto: Abordagem e Metodologia
+
+### 1. Abordagem Geral
+
+O projeto adota uma abordagem modular e baseada em scripts para o problema de segmentação semântica de pistas de pouso em imagens de satélite Sentinel-2. O fluxo de trabalho é dividido em etapas claras:
+
+#### 1.1. Aquisição de Dados
+Utilização do Google Earth Engine (GEE) para baixar imagens de satélite Sentinel-2. As coordenadas de 9 pistas de pouso foram obtidas através de buscas no Google Earth. Durante este processo, as imagens são filtradas para remover nuvens (com um limiar configurável) e são baixadas com a maior resolução espacial disponível gratuitamente (10x10 metros por pixel). O conjunto de dados foi dividido em: 6 imagens para treino, 2 para validação e 1 para teste (Vila Canopus - Altamira, Região Sudoeste do Pará).
+#### 1.2. Pré-processamento
+Masking e conversão de formatos de imagem (TIFF para PNG) e de anotações (JSON para PNG) para preparar os dados para o treinamento.
+#### 1.3. Treinamento de Modelos
+Implementação e treinamento de duas arquiteturas de redes neurais convolucionais (U-Net e U-Net++) para segmentação semântica.
+#### 1.4. Inferência e Visualização
+Geração de máscaras de predição e overlays visuais para avaliar o desempenho dos modelos em novas imagens.
+
+### 2. Metodologia de Classificação
+
+Duas arquiteturas de redes neurais foram ostensivamente exploradas:
+
+#### 2.1. U-Net (Baseline)
+
+*   **Arquitetura:** U-Net clássica.
+*   **Encoder:** `resnet34` pré-treinado no ImageNet. O ResNet34 é um encoder robusto e de bom desempenho, servindo como uma base sólida.
+*   **Função de Perda:** Combinação de `Binary Cross-Entropy (BCE)` e `Dice Loss`. A BCE é comum para classificação binária de pixels, enquanto a Dice Loss é eficaz para lidar com o desbalanceamento de classes e otimizar a métrica IoU (Intersection over Union).
+*   **Otimizador:** Adam.
+*   **Scheduler de Learning Rate:** Fixo.
+
+#### 2.2. U-Net++ (Estratégia Avançada)
+
+*   **Arquitetura:** U-Net++.
+*   **Encoder:** `efficientnet-b7` pré-treinado no ImageNet. O EfficientNet-B7 é um encoder mais moderno e eficiente que o ResNet34, oferecendo um melhor equilíbrio entre precisão e custo computacional.
+*   **Mecanismo de Atenção:** Utiliza `scse` (Spatial and Channel Squeeze & Excitation) no decoder, permitindo que o modelo foque nas características mais relevantes espacialmente e entre os canais.
+*   **Função de Perda:** Combinação ponderada de `Focal Loss` (0.75) e `Dice Loss` (0.25). A Focal Loss é particularmente útil para problemas com grande desbalanceamento de classes, dando mais peso aos exemplos difíceis de classificar.
+*   **Otimizador:** Adam com `weight_decay` ajustado para `5e-5` para regularização.
+*   **Scheduler de Learning Rate:** `CosineAnnealingLR`. Este scheduler varia a taxa de aprendizado de forma cíclica, permitindo que o modelo explore o espaço de parâmetros de forma mais eficaz e se estabeleça em mínimos mais profundos e estáveis.
+
+### 3. Desafios Encontrados e Soluções
+
+#### 3.1. Quantidade Limitada de Dados
+*   **Desafio:** O treinamento foi realizado com um dataset pequeno, contendo apenas 6 imagens para treino e 2 para validação. Isso aumenta significativamente o risco de overfitting e dificulta a generalização do modelo.
+*   **Solução:** Para mitigar este problema, uma estratégia agressiva de **Data Augmentation** foi implementada. Transformações como rotações, flips, variações de brilho/contraste, e distorções elásticas (`ElasticTransform`, `GridDistortion`) foram aplicadas em tempo real para criar novas variantes das imagens de treino a cada época, expandindo artificialmente o dataset e forçando o modelo a aprender características mais robustas e invariantes.
+
+#### 3.2. Gerenciamento de Configurações
+*   **Desafio:** Manter múltiplos parâmetros (caminhos, hiperparâmetros, configurações de modelo, regras de negócio, etc.) organizados e fáceis de modificar.
+*   **Solução:** Implementação de um sistema de configuração modular com `config.py` (para hiperparâmetros de experimentação) e `definitions.py` (para constantes e regras de negócio). Isso centraliza as configurações e melhora a legibilidade e a manutenibilidade do código.
+
+#### 3.3. Convergência e Estabilidade do Treinamento
+*   **Desafio:** O modelo U-Net++ inicial apresentava estagnação da perda de validação em um platô, mesmo com um scheduler `ReduceLROnPlateau`.
+*   **Solução:**
+    *   **Substituição do Scheduler:** Troca do `ReduceLROnPlateau` por `CosineAnnealingLR`, que promove uma descida mais suave e consistente da taxa de aprendizado, ajudando o modelo a explorar melhor o espaço de perda e evitar mínimos locais rasos.
+    *   **Ajuste de Regularização:** Aumento do `weight_decay` para `5e-5` para incentivar o modelo a encontrar soluções mais generalizáveis e prevenir o overfitting.
+    *   **Otimização da Função de Perda:** Reversão dos pesos da `Focal Loss` e `Dice Loss` para `0.75` e `0.25`, respectivamente, após a constatação de que um peso 50/50 piorava o desempenho, indicando a importância da Focal Loss para o problema de desbalanceamento de classes.
+
+#### 3.4. Otimização de Hiperparâmetros
+*   **Desafio:** Encontrar a combinação ideal de parâmetros para maximizar a performance do modelo, como a taxa de aprendizado, o tamanho do batch, a intensidade do data augmentation e o critério de parada (`early stopping`).
+*   **Solução:** Realização de um processo iterativo de experimentação. Cada alteração nos hiperparâmetros (`config.py`) foi seguida por um novo ciclo de treinamento e avaliação, permitindo a observação do impacto de cada ajuste na curva de aprendizado e na perda de validação final.
